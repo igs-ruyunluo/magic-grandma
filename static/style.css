@@ -1,0 +1,765 @@
+:root {
+  /* 背景 */
+  --bg-primary: #16121F;
+  --bg-panel: #1F1830;
+  --bg-stage: #100D19;
+  --bg-card: #2A2140;
+
+  /* 邊框 */
+  --border-default: #3D3158;
+  --border-glow: #8B5CF6;
+
+  /* 主色：魔法紫 */
+  --purple-500: #8B5CF6;
+  --purple-400: #A78BFA;
+  --purple-700: #5B3AA8;
+
+  /* 主色：邪惡綠 */
+  --venom-green: #6FE05C;
+  --venom-green-dim: #2F5E28;
+  --venom-glow: #9AFF7A;
+
+  /* 警示 */
+  --danger: #FF4D6A;
+  --warning-text: #E39CFF;
+
+  /* 文字 */
+  --text-primary: #F0EAFF;
+  --text-secondary: #B8ACD9;
+  --text-muted: #6E6291;
+
+  /* 金幣 */
+  --gold: #F5C518;
+
+  /* 字體 */
+  --font-body: -apple-system, 'Noto Sans TC', sans-serif;
+  --font-mono: 'JetBrains Mono', 'Courier New', monospace;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-body);
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  height: 100vh;
+  overflow: hidden;
+}
+
+.layout {
+  display: flex;
+  height: 100vh;
+}
+
+/* === 左欄：操作面板 === */
+.panel {
+  width: 25%;
+  min-width: 280px;
+  background: var(--bg-panel);
+  border-right: 1px solid var(--border-default);
+  padding: 24px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  overflow-y: auto;
+}
+
+.panel-title {
+  text-align: center;
+}
+
+.panel-title .label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+.panel-title h1 {
+  font-size: 22px;
+  font-weight: 700;
+  margin-top: 4px;
+}
+
+/* 金幣卡片 */
+.gold-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-default);
+  border-radius: 18px;
+  padding: 14px 18px;
+  text-align: center;
+}
+
+.gold-card .gold-label {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.gold-card .gold-value {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--gold);
+  font-family: var(--font-mono);
+}
+
+/* 資訊卡片 */
+.info-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-default);
+  border-radius: 18px;
+  padding: 16px 20px;
+}
+
+.info-card .potion-name {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--venom-green);
+}
+
+.info-card .potion-desc {
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin-top: 4px;
+}
+
+/* 數值列表 */
+.stat-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border-default);
+  font-size: 14px;
+}
+
+.stat-row:last-child {
+  border-bottom: none;
+}
+
+.stat-row .label {
+  color: var(--text-secondary);
+}
+
+.stat-row .value {
+  color: var(--text-primary);
+  font-weight: 600;
+  font-family: var(--font-mono);
+}
+
+/* 風險警告 */
+.risk-warning {
+  font-size: 13px;
+  color: var(--warning-text);
+  text-align: center;
+  padding: 8px;
+}
+
+/* 下注金額調整 */
+.bet-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.bet-controls input {
+  width: 100px;
+  text-align: center;
+  font-size: 18px;
+  font-family: var(--font-mono);
+  padding: 8px 12px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-default);
+  border-radius: 12px;
+  color: var(--gold);
+  outline: none;
+}
+
+.bet-controls input:focus {
+  border-color: var(--purple-400);
+}
+
+.btn-round {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--bg-card);
+  border: 1px solid var(--border-default);
+  color: var(--text-primary);
+  font-size: 18px;
+  cursor: pointer;
+  transition: border-color 0.15s;
+}
+
+.btn-round:hover {
+  border-color: var(--purple-400);
+}
+
+/* 可得金額 */
+.payout-display {
+  text-align: center;
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.payout-display .payout-value {
+  color: var(--venom-green);
+  font-weight: 600;
+  font-family: var(--font-mono);
+}
+
+/* 底部按鈕 */
+.panel-buttons {
+  margin-top: auto;
+  display: flex;
+  gap: 10px;
+}
+
+.btn {
+  border-radius: 16px;
+  padding: 14px 28px;
+  font-weight: 600;
+  font-size: 15px;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+  flex: 1;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+}
+
+.btn:active {
+  transform: translateY(0px) scale(0.98);
+}
+
+.btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #8B5CF6, #6FE05C);
+  color: #16121F;
+  border-radius: 20px;
+  box-shadow: 0 4px 20px rgba(139, 92, 246, 0.4);
+}
+
+.btn-primary:hover:not(:disabled) {
+  box-shadow: 0 6px 24px rgba(139, 92, 246, 0.6);
+}
+
+.btn-primary.brewing {
+  background: linear-gradient(135deg, #6FE05C, #9AFF7A);
+  animation: btnPulse 1.5s infinite;
+}
+
+@keyframes btnPulse {
+  0%, 100% { box-shadow: 0 4px 20px rgba(111, 224, 92, 0.3); }
+  50% { box-shadow: 0 6px 30px rgba(111, 224, 92, 0.6); }
+}
+
+.btn-secondary {
+  background: var(--bg-card);
+  color: var(--text-primary);
+  border: 1.5px solid var(--border-default);
+  border-radius: 16px;
+}
+
+.btn-secondary:hover:not(:disabled) {
+  border-color: var(--purple-400);
+}
+
+/* === 右欄：煉藥舞台 === */
+.stage {
+  flex: 1;
+  background: var(--bg-stage);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* HUD 邊角 */
+.stage::before,
+.stage::after {
+  content: '';
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  border-color: var(--border-default);
+  border-style: solid;
+}
+
+.stage::before {
+  top: 16px;
+  left: 16px;
+  border-width: 2px 0 0 2px;
+}
+
+.stage::after {
+  bottom: 16px;
+  right: 16px;
+  border-width: 0 2px 2px 0;
+}
+
+.stage-corner-tr,
+.stage-corner-bl {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  border-color: var(--border-default);
+  border-style: solid;
+}
+
+.stage-corner-tr {
+  top: 16px;
+  right: 16px;
+  border-width: 2px 2px 0 0;
+}
+
+.stage-corner-bl {
+  bottom: 16px;
+  left: 16px;
+  border-width: 0 0 2px 2px;
+}
+
+/* === 魔法陣背景 === */
+.magic-circle {
+  position: absolute;
+  width: 400px;
+  height: 400px;
+  border: 2px solid rgba(139, 92, 246, 0.15);
+  border-radius: 50%;
+  animation: rotate 20s linear infinite;
+  pointer-events: none;
+}
+
+.magic-circle::before {
+  content: '';
+  position: absolute;
+  inset: 20px;
+  border: 1px solid rgba(139, 92, 246, 0.1);
+  border-radius: 50%;
+}
+
+.magic-circle::after {
+  content: '';
+  position: absolute;
+  inset: 50px;
+  border: 1.5px dashed rgba(111, 224, 92, 0.1);
+  border-radius: 50%;
+  animation: rotate-reverse 15s linear infinite;
+}
+
+.magic-circle-inner {
+  position: absolute;
+  width: 250px;
+  height: 250px;
+  border: 1px solid rgba(139, 92, 246, 0.08);
+  border-radius: 50%;
+  animation: rotate-reverse 12s linear infinite;
+  pointer-events: none;
+}
+
+.magic-circle-inner::before {
+  content: '✦';
+  position: absolute;
+  top: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: rgba(139, 92, 246, 0.3);
+  font-size: 16px;
+}
+
+.stage.brewing .magic-circle {
+  border-color: rgba(111, 224, 92, 0.25);
+  animation-duration: 8s;
+  box-shadow: 0 0 60px rgba(111, 224, 92, 0.05);
+}
+
+.stage.brewing .magic-circle::after {
+  border-color: rgba(111, 224, 92, 0.2);
+  animation-duration: 6s;
+}
+
+.stage.risk-high .magic-circle {
+  border-color: rgba(255, 77, 106, 0.3);
+  animation-duration: 4s;
+  box-shadow: 0 0 80px rgba(255, 77, 106, 0.08);
+}
+
+.stage.risk-high .magic-circle::after {
+  border-color: rgba(227, 156, 255, 0.25);
+  animation-duration: 3s;
+}
+
+@keyframes rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes rotate-reverse {
+  from { transform: rotate(360deg); }
+  to { transform: rotate(0deg); }
+}
+
+/* === 粒子效果 === */
+.particles {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.particle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: var(--venom-green);
+  border-radius: 50%;
+  opacity: 0;
+  animation: float-particle 4s infinite;
+  box-shadow: 0 0 6px var(--venom-green);
+}
+
+.stage.brewing .particle {
+  opacity: 0.6;
+}
+
+.stage.risk-high .particle {
+  background: var(--warning-text);
+  box-shadow: 0 0 6px var(--warning-text);
+  animation-duration: 2s;
+}
+
+@keyframes float-particle {
+  0% {
+    opacity: 0;
+    transform: translateY(0) scale(0.5);
+  }
+  20% {
+    opacity: 0.7;
+  }
+  80% {
+    opacity: 0.3;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-120px) translateX(20px) scale(0);
+  }
+}
+
+/* 左上狀態標籤 */
+.stage-status {
+  position: absolute;
+  top: 24px;
+  left: 70px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+.stage-status .dot {
+  color: var(--venom-green);
+}
+
+.stage-status.brewing .dot {
+  animation: blink 1s infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+/* 右上倍率徽章 */
+.stage-badge {
+  position: absolute;
+  top: 24px;
+  right: 70px;
+  font-family: var(--font-mono);
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--venom-green);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.stage-badge.visible {
+  opacity: 1;
+}
+
+/* 中央主視覺 */
+.stage-center {
+  text-align: center;
+  z-index: 2;
+  position: relative;
+}
+
+/* === 藥水瓶 === */
+.potion-bottle {
+  width: 100px;
+  height: 140px;
+  margin: 0 auto 20px;
+  position: relative;
+  animation: breathe 2s ease-in-out infinite;
+}
+
+@keyframes breathe {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.02); }
+}
+
+.stage.brewing .potion-bottle {
+  animation: breathe-active 1.2s ease-in-out infinite;
+}
+
+@keyframes breathe-active {
+  0%, 100% { transform: scale(0.98) rotate(-0.5deg); }
+  50% { transform: scale(1.03) rotate(0.5deg); }
+}
+
+.bottle-body {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 70px;
+  height: 90px;
+  border: 2px solid var(--purple-500);
+  border-radius: 8px 8px 20px 20px;
+  overflow: hidden;
+  background: rgba(42, 33, 64, 0.8);
+}
+
+.bottle-neck {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 24px;
+  height: 40px;
+  border: 2px solid var(--purple-500);
+  border-radius: 4px 4px 0 0;
+  border-bottom: none;
+  background: rgba(42, 33, 64, 0.8);
+}
+
+.bottle-cap {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 32px;
+  height: 12px;
+  background: var(--purple-700);
+  border-radius: 4px 4px 0 0;
+  border: 2px solid var(--purple-500);
+}
+
+.bottle-liquid {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 10%;
+  background: var(--venom-green);
+  transition: height 0.3s ease, background 0.5s ease;
+  box-shadow: 0 -4px 12px rgba(111, 224, 92, 0.3);
+}
+
+.bottle-liquid.risk-medium {
+  background: var(--purple-400);
+  box-shadow: 0 -4px 12px rgba(167, 139, 250, 0.4);
+}
+
+.bottle-liquid.risk-high {
+  background: var(--danger);
+  box-shadow: 0 -4px 12px rgba(255, 77, 106, 0.4);
+}
+
+/* 液體氣泡 */
+.bottle-liquid::before,
+.bottle-liquid::after {
+  content: '';
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  animation: bubble 2s infinite;
+}
+
+.bottle-liquid::before {
+  left: 20%;
+  bottom: 30%;
+  animation-delay: 0s;
+}
+
+.bottle-liquid::after {
+  left: 60%;
+  bottom: 50%;
+  animation-delay: 0.8s;
+}
+
+@keyframes bubble {
+  0% { transform: translateY(0) scale(1); opacity: 0.6; }
+  100% { transform: translateY(-20px) scale(0.3); opacity: 0; }
+}
+
+/* 瓶身發光 */
+.bottle-body::after {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: 10px 10px 22px 22px;
+  border: 2px solid transparent;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.stage.brewing .bottle-body::after {
+  border-color: rgba(111, 224, 92, 0.3);
+  box-shadow: 0 0 20px rgba(111, 224, 92, 0.15);
+}
+
+.stage.risk-high .bottle-body::after {
+  border-color: rgba(255, 77, 106, 0.4);
+  box-shadow: 0 0 30px rgba(255, 77, 106, 0.2);
+}
+
+/* 倍率數字 */
+.multiplier-display {
+  font-family: var(--font-mono);
+  font-size: 56px;
+  font-weight: 700;
+  color: var(--venom-green);
+  transition: color 0.3s;
+}
+
+.multiplier-display.tick-bounce {
+  animation: tickBounce 0.15s ease-out;
+}
+
+@keyframes tickBounce {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.08); }
+  100% { transform: scale(1); }
+}
+
+.multiplier-display.risk-medium {
+  color: var(--purple-400);
+}
+
+.multiplier-display.risk-high {
+  color: var(--warning-text);
+}
+
+.multiplier-display.crashed {
+  color: var(--danger);
+  animation: shake 0.4s;
+}
+
+.multiplier-display.cashed {
+  color: var(--venom-glow);
+  text-shadow: 0 0 20px rgba(111, 224, 92, 0.6);
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  15% { transform: translateX(-8px) rotate(-1deg); }
+  30% { transform: translateX(8px) rotate(1deg); }
+  45% { transform: translateX(-6px); }
+  60% { transform: translateX(6px); }
+  75% { transform: translateX(-3px); }
+  90% { transform: translateX(3px); }
+}
+
+.stage-message {
+  margin-top: 12px;
+  font-size: 16px;
+  color: var(--text-secondary);
+  min-height: 24px;
+}
+
+.stage-message.success {
+  color: var(--venom-green);
+}
+
+.stage-message.fail {
+  color: var(--danger);
+}
+
+/* === 爆炸閃光效果 === */
+.flash-overlay {
+  position: absolute;
+  inset: 0;
+  background: var(--danger);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 100;
+  transition: opacity 0.05s;
+}
+
+.flash-overlay.active {
+  animation: flashBang 0.4s ease-out;
+}
+
+@keyframes flashBang {
+  0% { opacity: 0.6; }
+  100% { opacity: 0; }
+}
+
+/* 成功閃光 */
+.flash-overlay.success-flash {
+  background: var(--venom-green);
+  animation: flashBang 0.3s ease-out;
+}
+
+/* === 進度條（風險累積） === */
+.progress-bar {
+  position: absolute;
+  bottom: 24px;
+  left: 70px;
+  right: 70px;
+  height: 4px;
+  background: var(--border-default);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.progress-bar .fill {
+  height: 100%;
+  width: 0%;
+  background: var(--venom-green);
+  transition: width 0.1s linear, background 0.3s;
+  border-radius: 2px;
+}
+
+.progress-bar .fill.risk-medium {
+  background: var(--purple-400);
+}
+
+.progress-bar .fill.risk-high {
+  background: var(--danger);
+}
+
+/* 進度條標籤 */
+.progress-label {
+  position: absolute;
+  bottom: 32px;
+  left: 70px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-muted);
+  letter-spacing: 0.05em;
+}

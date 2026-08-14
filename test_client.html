@@ -1,0 +1,22 @@
+<!-- test_client.html -->
+<input type="text" id="messageInput" placeholder="輸入訊息">
+<button onclick="sendMessage()">送出</button>
+<div id="output"></div>
+
+<script>
+    // 1. 建立連線
+    var ws = new WebSocket("ws://localhost:8000");
+
+    // 2. 收到訊息時，顯示在 output 裡
+    ws.onmessage = function(event) {
+        document.getElementById("output").innerHTML += event.data + "<br>";
+    };
+
+    // 3. 按按鈕時呼叫這個
+    function sendMessage() {
+        var msg = document.getElementById("messageInput").value;
+        ws.send(msg);
+    }
+</script>
+
+<!-- 醜、陽春、純粹只是為了驗證連線 -->

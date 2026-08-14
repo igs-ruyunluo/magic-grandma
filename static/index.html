@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <title>魔法阿嬤 - 煉藥水</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="layout">
+        <!-- 左欄：操作面板 -->
+        <div class="panel">
+            <div class="panel-title">
+                <span class="label">MAGIC GRANDMA</span>
+                <h1>魔法阿嬤 - 煉藥水</h1>
+            </div>
+
+            <div class="gold-card">
+                <div class="gold-label">💰 持有金幣</div>
+                <div class="gold-value" id="balanceDisplay">1000.0</div>
+            </div>
+
+            <div class="info-card">
+                <div class="potion-name">🧪 初階回復藥</div>
+                <div class="potion-desc">投入金幣，煉製藥水，在爆炸前賣出</div>
+            </div>
+
+            <div class="info-card">
+                <div class="stat-row">
+                    <span class="label">目前倍率</span>
+                    <span class="value" id="panelMultiplier">1.00x</span>
+                </div>
+                <div class="stat-row">
+                    <span class="label">下注金額</span>
+                    <span class="value" id="panelBet">-</span>
+                </div>
+                <div class="stat-row">
+                    <span class="label">目前可得</span>
+                    <span class="value" id="panelPayout">-</span>
+                </div>
+            </div>
+
+            <div class="risk-warning" id="riskWarning">⚠️ 倍率越高，爆炸風險越大</div>
+
+            <div class="bet-controls">
+                <button class="btn-round" id="betMinus">−</button>
+                <input type="number" id="betAmount" value="100" min="1">
+                <button class="btn-round" id="betPlus">+</button>
+            </div>
+
+            <div class="payout-display">
+                停止後可得：<span class="payout-value" id="livePayout">-</span>
+            </div>
+
+            <div class="panel-buttons">
+                <button class="btn btn-secondary" id="cashOutBtn" disabled>賣出藥水</button>
+                <button class="btn btn-primary" id="betBtn">開始煉製</button>
+            </div>
+        </div>
+
+        <!-- 右欄：煉藥舞台 -->
+        <div class="stage" id="stage">
+            <div class="stage-corner-tr"></div>
+            <div class="stage-corner-bl"></div>
+
+            <!-- 爆炸/成功閃光 -->
+            <div class="flash-overlay" id="flashOverlay"></div>
+
+            <!-- 魔法陣 -->
+            <div class="magic-circle"></div>
+            <div class="magic-circle-inner"></div>
+
+            <!-- 粒子 -->
+            <div class="particles" id="particles"></div>
+
+            <div class="stage-status" id="stageStatus">
+                Magic Core <span class="dot">■</span> Standby
+            </div>
+
+            <div class="stage-badge" id="stageBadge">1.00x</div>
+
+            <div class="stage-center">
+                <!-- 藥水瓶 -->
+                <div class="potion-bottle" id="potionBottle">
+                    <div class="bottle-cap"></div>
+                    <div class="bottle-neck"></div>
+                    <div class="bottle-body">
+                        <div class="bottle-liquid" id="bottleLiquid"></div>
+                    </div>
+                </div>
+
+                <div class="multiplier-display" id="multiplier">1.00x</div>
+                <div class="stage-message" id="stageMessage">空的煉藥台 — 投入金幣以啟動</div>
+            </div>
+
+            <span class="progress-label">RISK</span>
+            <div class="progress-bar">
+                <div class="fill" id="progressFill"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="game.js"></script>
+</body>
+</html>
