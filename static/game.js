@@ -93,8 +93,8 @@ ws.onmessage = function(event) {
     var data = JSON.parse(event.data);
 
     if (data.type === "balance") {
-    balanceDisplay.textContent = data.balance.toFixed(1);}
-    if (data.type === "game_start") {
+    balanceDisplay.textContent = data.balance.toFixed(1);
+    }else if (data.type === "game_start") {
         balanceDisplay.textContent = data.balance.toFixed(1);
         stageMessage.textContent = "藥水煉製中...";
         stageMessage.className = "stage-message";
