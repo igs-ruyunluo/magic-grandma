@@ -9,6 +9,8 @@ from game.room import fake_players, player_bet, settle_win
 def handle_game_round(ws):
 
     while True:        
+        
+        ws.send(json.dumps({"type": "balance", "balance": fake_players["player1"]["balance"]}))
         bet_msg = ws.receive()
         bet_data = json.loads(bet_msg)
         player_id = bet_data["player_id"]

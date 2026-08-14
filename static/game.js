@@ -194,7 +194,10 @@ ws.onmessage = function(event) {
         stageMessage.textContent = "❌ " + data.message;
         stageMessage.className = "stage-message fail";
         endRound();
-    }
+    } else if (data.type === "balance") {
+    balanceDisplay.textContent = data.balance.toFixed(1);
+}
+
 };
 
 function endRound() {
