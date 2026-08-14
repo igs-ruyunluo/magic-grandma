@@ -92,6 +92,8 @@ betBtn.addEventListener("click", function() {
 ws.onmessage = function(event) {
     var data = JSON.parse(event.data);
 
+    if (data.type === "balance") {
+    balanceDisplay.textContent = data.balance.toFixed(1);}
     if (data.type === "game_start") {
         balanceDisplay.textContent = data.balance.toFixed(1);
         stageMessage.textContent = "藥水煉製中...";
@@ -194,9 +196,7 @@ ws.onmessage = function(event) {
         stageMessage.textContent = "❌ " + data.message;
         stageMessage.className = "stage-message fail";
         endRound();
-    } else if (data.type === "balance") {
-    balanceDisplay.textContent = data.balance.toFixed(1);
-}
+    } 
 
 };
 
