@@ -1,3 +1,6 @@
 falcon
 gevent
 gevent-websocket
+redis
+pymongo
+bcrypt
