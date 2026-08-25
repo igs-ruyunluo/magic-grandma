@@ -56,6 +56,28 @@
                 <button class="btn btn-secondary" id="cashOutBtn" disabled>賣出藥水</button>
                 <button class="btn btn-primary" id="betBtn">開始煉製</button>
             </div>
+
+            <!-- 排行榜 -->
+            <div class="info-card" id="leaderboardCard">
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <span class="potion-name">🏆 排行榜</span>
+                    <button id="expandLeaderboard" style="background:none; border:1px solid var(--border-default); color:var(--text-secondary); border-radius:8px; padding:4px 10px; font-size:11px; cursor:pointer;">展開</button>
+                </div>
+                <div id="leaderboardContent" style="margin-top:10px; font-size:13px;">
+                    載入中...
+                </div>
+            </div>
+
+            <!-- 排行榜彈窗 -->
+            <div id="leaderboardModal" style="display:none; position:fixed; inset:0; z-index:1000; background:rgba(0,0,0,0.7); align-items:center; justify-content:center;">
+                <div style="background:var(--bg-panel); border:1px solid var(--border-glow); border-radius:24px; padding:32px; width:480px; max-height:80vh; overflow-y:auto;">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+                        <h2 style="font-size:20px;">🏆 排行榜 TOP 10</h2>
+                        <button id="closeLeaderboard" style="background:none; border:none; color:var(--text-secondary); font-size:24px; cursor:pointer;">✕</button>
+                    </div>
+                    <div id="leaderboardFull" style="font-size:14px;">載入中...</div>
+                </div>
+            </div>
         </div>
 
         <!-- 右欄：煉藥舞台 -->

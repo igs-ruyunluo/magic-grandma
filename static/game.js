@@ -222,6 +222,7 @@ function endRound() {
     betInput.disabled = false;
     betMinus.disabled = false;
     betPlus.disabled = false;
+    loadLeaderboard();
 }
 
 // === Cash Out 按鈕 ===
@@ -234,6 +235,59 @@ document.getElementById("logoutBtn").addEventListener("click", function() {
     localStorage.clear();
     window.location.href = "/login.html";
 });
+
+// === 排行榜 ===
+function loadLeaderboard() {
+    fetch("/leaderboard")
+        .then(function(res) { return res.json(); })
+        .then(function(data) {
+            // 左下角：顯示前三名完整資訊
+            var miniHtml = '<table style="width:100%; border-collapse:collapse;">';
+            miniHtml += '<tr style="color:var(--text-muted); font-size:11px;"><th style="text-align:left; padding:4px 0;">玩家</th><th style="text-align:right;">壓注</th><th style="text-align:right;">贏分</th><th style="text-align:right;">RTP</th></tr>';
+            data.leaderboard.slice(0, 3).forEach(function(p, i) {
+                var medal = i === 0 ? '🥇' : i === 1 ? '🥈' : '🥉';
+                var rtpColor = p.rtp >= 1 ? 'var(--venom-green)' : 'var(--danger)';
+                miniHtml += '<tr style="border-top:1px solid var(--border-default);">';
+                miniHtml += '<td style="padding:4px 0;">' + medal + ' ' + p._id + '</td>';
+                miniHtml += '<td style="text-align:right; color:var(--gold);">' + p.total_bet.toFixed(0) + '</td>';
+                miniHtml += '<td style="text-align:right; color:var(--venom-green);">' + p.total_profit.toFixed(0) + '</td>';
+                miniHtml += '<td style="text-align:right; color:' + rtpColor + ';">' + (p.rtp * 100).toFixed(0) + '%</td>';
+                miniHtml += '</tr>';
+            });
+            miniHtml += '</table>';
+            document.getElementById("leaderboardContent").innerHTML = miniHtml || '尚無資料';
+
+            // 彈窗：顯示前十名
+            var fullHtml = '<table style="width:100%; border-collapse:collapse;">';
+            fullHtml += '<tr style="color:var(--text-muted); font-size:12px;"><th style="text-align:left; padding:8px 0;">排名</th><th style="text-align:left;">玩家</th><th style="text-align:right;">壓注</th><th style="text-align:right;">贏分</th><th style="text-align:right;">RTP</th></tr>';
+            data.leaderboard.forEach(function(p, i) {
+                var medal = i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : (i+1);
+                var rtpColor = p.rtp >= 1 ? 'var(--venom-green)' : 'var(--danger)';
+                fullHtml += '<tr style="border-top:1px solid var(--border-default);">';
+                fullHtml += '<td style="padding:8px 0;">' + medal + '</td>';
+                fullHtml += '<td>' + p._id + '</td>';
+                fullHtml += '<td style="text-align:right; color:var(--gold);">' + p.total_bet.toFixed(0) + '</td>';
+                fullHtml += '<td style="text-align:right; color:var(--venom-green);">' + p.total_profit.toFixed(0) + '</td>';
+                fullHtml += '<td style="text-align:right; color:' + rtpColor + ';">' + (p.rtp * 100).toFixed(0) + '%</td>';
+                fullHtml += '</tr>';
+            });
+            fullHtml += '</table>';
+            document.getElementById("leaderboardFull").innerHTML = fullHtml;
+        });
+}
+
+// 展開/關閉彈窗
+document.getElementById("expandLeaderboard").addEventListener("click", function() {
+    document.getElementById("leaderboardModal").style.display = "flex";
+});
+document.getElementById("closeLeaderboard").addEventListener("click", function() {
+    document.getElementById("leaderboardModal").style.display = "none";
+});
+document.getElementById("leaderboardModal").addEventListener("click", function(e) {
+    if (e.target === this) this.style.display = "none";
+});
+
+loadLeaderboard();
 
 // === 斷線 ===
 ws.onclose = function() {

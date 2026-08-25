@@ -3,6 +3,7 @@ import falcon
 from resources.balance import BalanceResource
 from resources.game_ws import handle_game_round
 from resources.auth import RegisterResource, LoginResource
+from resources.history import LeaderboardResources
 
 falcon_app = falcon.App()
 static_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static')
@@ -11,6 +12,7 @@ falcon_app.add_static_route('/', static_path)
 falcon_app.add_route('/register', RegisterResource())
 falcon_app.add_route('/login', LoginResource())
 falcon_app.add_route('/balance/{username}', BalanceResource())
+falcon_app.add_route('/leaderboard', LeaderboardResources())
 
 class IndexResource:
     def on_get(self, req, resp):
