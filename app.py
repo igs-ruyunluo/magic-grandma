@@ -1,15 +1,21 @@
 import os
 import falcon
+from resources.balance import BalanceResource
 from resources.game_ws import handle_game_round
+from resources.auth import RegisterResource, LoginResource
 
 falcon_app = falcon.App()
 static_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static')
 falcon_app.add_static_route('/', static_path)
 
+falcon_app.add_route('/register', RegisterResource())
+falcon_app.add_route('/login', LoginResource())
+falcon_app.add_route('/balance/{username}', BalanceResource())
+
 class IndexResource:
     def on_get(self, req, resp):
         resp.content_type = 'text/html'
-        index_path = os.path.join(static_path, 'index.html')
+        index_path = os.path.join(static_path, 'login.html')
         with open(index_path, 'r', encoding='utf-8') as f:
             resp.text = f.read()
 

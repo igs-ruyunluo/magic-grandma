@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <title>魔法阿嬤 - 登入</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .login-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background: var(--bg-primary);
+        }
+        .login-card {
+            background: var(--bg-panel);
+            border: 1px solid var(--border-default);
+            border-radius: 24px;
+            padding: 40px;
+            width: 360px;
+            text-align: center;
+        }
+        .login-card h1 {
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+        .login-card .subtitle {
+            color: var(--text-secondary);
+            font-size: 14px;
+            margin-bottom: 24px;
+        }
+        .login-card input {
+            width: 100%;
+            padding: 12px 16px;
+            margin-bottom: 12px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-default);
+            border-radius: 12px;
+            color: var(--text-primary);
+            font-size: 15px;
+            outline: none;
+        }
+        .login-card input:focus {
+            border-color: var(--purple-400);
+        }
+        .login-card .btn-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 16px;
+        }
+        .login-card .btn {
+            flex: 1;
+            padding: 12px;
+            border-radius: 16px;
+            font-size: 15px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+        }
+        .login-card .btn-login {
+            background: linear-gradient(135deg, #8B5CF6, #6FE05C);
+            color: #16121F;
+        }
+        .login-card .btn-register {
+            background: var(--bg-card);
+            color: var(--text-primary);
+            border: 1.5px solid var(--border-default);
+        }
+        .login-card .message {
+            margin-top: 16px;
+            font-size: 14px;
+            min-height: 20px;
+        }
+        .login-card .message.error { color: var(--danger); }
+        .login-card .message.success { color: var(--venom-green); }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-card">
+            <h1>🧙‍♀️ 魔法阿嬤</h1>
+            <p class="subtitle">登入或註冊以開始煉藥</p>
+            <input type="text" id="username" placeholder="帳號">
+            <input type="password" id="password" placeholder="密碼">
+            <div class="btn-group">
+                <button class="btn btn-register" id="registerBtn">註冊</button>
+                <button class="btn btn-login" id="loginBtn">登入</button>
+            </div>
+            <p class="message" id="message"></p>
+        </div>
+    </div>
+
+    <script>
+        var messageEl = document.getElementById("message");
+
+        document.getElementById("loginBtn").addEventListener("click", function() {
+            doAuth("/login");
+        });
+
+        document.getElementById("registerBtn").addEventListener("click", function() {
+            doAuth("/register");
+        });
+
+        function doAuth(endpoint) {
+            var username = document.getElementById("username").value;
+            var password = document.getElementById("password").value;
+
+            if (!username || !password) {
+                showMessage("請輸入帳號和密碼", "error");
+                return;
+            }
+
+            fetch(endpoint, {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({username: username, password: password})
+            })
+            .then(function(res) { return res.json().then(function(data) { return {status: res.status, data: data}; }); })
+            .then(function(result) {
+                if (result.status === 200 || result.status === 201) {
+                    // 登入或註冊成功
+                    showMessage(result.data.message, "success");
+                    // 存 username，跳轉到遊戲頁面
+                    localStorage.setItem("username", username);
+                    setTimeout(function() {
+                        window.location.href = "/index.html";
+                    }, 800);
+                } else {
+                    showMessage(result.data.message, "error");
+                }
+            })
+            .catch(function(err) {
+                showMessage("連線錯誤", "error");
+            });
+        }
+
+        function showMessage(text, type) {
+            messageEl.textContent = text;
+            messageEl.className = "message " + type;
+        }
+
+        // 如果已經登入過，直接跳轉
+        if (localStorage.getItem("username")) {
+            window.location.href = "/index.html";
+        }
+    </script>
+</body>
+</html>

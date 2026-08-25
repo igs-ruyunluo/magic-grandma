@@ -1,9 +1,10 @@
 from game.crash import generate_crash_point
 from game.multiplier import grow_multiplier
+from db.connection import db
 
-fake_players = {
-    "player1": {"balance": 2000.0}
-}
+# fake_players = {
+#     "player1": {"balance": 2000.0}
+# }
 
 
 def run_game_round():
@@ -19,11 +20,20 @@ def run_game_round():
 
 
 def player_bet(player_id, amount):
-    if fake_players[player_id]["balance"] < amount:
+    player = db.players.find_one({"username":player_id})
+    if player is None:
+        return False
+    if player["balance"] < amount:
         return False
     
-    fake_players[player_id]["balance"] -=amount
+    db.players.update_one({"username":player_id},
+                     {"$inc":{"balance":-amount}})
     return True
 
 def settle_win(player_id, amount, multiplier):
-    fake_players[player_id]["balance"] += amount * multiplier
+    player = db.players.find_one({"username":player_id})
+    if player is None:
+        return False
+    db.players.update_one({"username":player_id},
+                     {"$inc":{"balance":+amount * multiplier}})
+   

@@ -1,3 +1,9 @@
+// 檢查是否有登入
+var currentUser = localStorage.getItem("username");
+if (!currentUser) {
+    window.location.href = "/login.html";
+}
+
 var wsProtocol = window.location.protocol === "https:" ? "wss://" : "ws://";
 var ws = new WebSocket(wsProtocol + window.location.host);
 
@@ -46,6 +52,14 @@ createParticles(12);
 // === 連線建立 ===
 ws.onopen = function() {
     stageMessage.textContent = "空的煉藥台 — 投入金幣以啟動";
+    // 載入時查一次真實餘額
+    fetch("/balance/" + currentUser)
+        .then(function(res) { return res.json(); })
+        .then(function(data) {
+            if (data.balance !== undefined) {
+                balanceDisplay.textContent = data.balance.toFixed(1);
+            }
+        });
 };
 
 // === 金額加減按鈕 ===
@@ -69,7 +83,7 @@ betBtn.addEventListener("click", function() {
     currentBet = amount;
     ws.send(JSON.stringify({
         action: "bet",
-        player_id: "player1",
+        player_id: currentUser,
         amount: amount
     }));
     betBtn.disabled = true;
@@ -213,6 +227,12 @@ function endRound() {
 // === Cash Out 按鈕 ===
 cashOutBtn.addEventListener("click", function() {
     ws.send("cash_out");
+});
+
+// === 登出 ===
+document.getElementById("logoutBtn").addEventListener("click", function() {
+    localStorage.clear();
+    window.location.href = "/login.html";
 });
 
 // === 斷線 ===

@@ -3,28 +3,28 @@ import json
 from game.crash import generate_crash_point
 from game.multiplier import grow_multiplier
 from config import TICK_INTERVAL
-from game.room import fake_players, player_bet, settle_win
-
+from game.room import player_bet, settle_win
+from db.connection import db
 
 def handle_game_round(ws):
 
     while True:        
-        
-        ws.send(json.dumps({"type": "balance", "balance": fake_players["player1"]["balance"]}))
         bet_msg = ws.receive()
+        if bet_msg is None:
+            return
+        
         bet_data = json.loads(bet_msg)
         player_id = bet_data["player_id"]
         amount = bet_data["amount"]
 
-        if bet_msg is None:
-            return
-
+       
         # 扣款
         if not player_bet(player_id, amount):
             ws.send(json.dumps({"type":"error", "message":"餘額不足"}))
             break
-
-        ws.send(json.dumps({"type": "game_start", "balance": fake_players[player_id]["balance"]}))
+        
+        player = db.players.find_one({"username":player_id})
+        ws.send(json.dumps({"type": "game_start", "balance": player["balance"]}))
         
         crash_point = generate_crash_point()
         current_multi = 1.00
@@ -49,10 +49,11 @@ def handle_game_round(ws):
             
             if cashed_out[0]:
                 settle_win(player_id, amount, current_multi)
+                player = db.players.find_one({"username":player_id}) # 重新查餘額
                 ws.send(json.dumps({
                     "type":"cash_out", 
                     "multiplier":round(current_multi, 2),
-                    "balance":fake_players[player_id]["balance"]
+                    "balance":player["balance"]
                     }))
                 break
             else:
