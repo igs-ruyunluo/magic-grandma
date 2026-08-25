@@ -4,6 +4,8 @@ from pymongo import MongoClient
 
 MONGO_URI = os.environ.get("MONGO_URI", "mongodb://localhost:27017/")
 REDIS_URL = os.environ.get("REDIS_URL", "redis://localhost:6379/0")
+print(f"[DEBUG] MONGO_URI = {MONGO_URI[:40]}")
+
 client = MongoClient(MONGO_URI)
 
 try:
